@@ -24,15 +24,15 @@
   "Info": {
     "CanInstallFirmware": true,
     "CanResetBoard": true,
-    "FirmwareBaseName": "mobiflight_template_micro",
+    "FirmwareBaseName": "sec_led_14_seg_micro",
     "FirmwareExtension": "hex",
-    "FriendlyName": "Mobiflight Template Micro",
+    "FriendlyName": "SEC led_14_seg Micro",
     "LatestFirmwareVersion": "0.0.1",
-    "MobiFlightType": "Mobiflight Template Micro",
+    "MobiFlightType": "SEC led_14_seg Micro",
     "ResetFirmwareFile": "reset.arduino_promicro_1_0_2.hex",
     "CustomDeviceTypes": [
-      "MOBIFLIGHT_TEMPLATE",
-      "MOBIFLIGHT_TEMPLATE2"
+      "led_14_seg",
+      "led_14_seg2"
     ],
     "Community": {
       "Project": "Your Project",

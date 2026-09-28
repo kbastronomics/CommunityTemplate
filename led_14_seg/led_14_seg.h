@@ -2,10 +2,10 @@
 
 #include "Arduino.h"
 
-class MyCustomClass
+class led_14_seg
 {
 public:
-    MyCustomClass(uint8_t Pin1, uint8_t Pin2);
+    led_14_seg(uint8_t Pin1, uint8_t Pin2);
     void begin();
     void attach(uint16_t Pin3, char *init);
     void detach();

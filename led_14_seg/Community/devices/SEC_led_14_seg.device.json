@@ -1,9 +1,9 @@
 {
     "$schema": "./mfdevice.schema.json",
     "Info": {
-      "Label": "Mobiflight's template",
-      "Type": "MOBIFLIGHT_TEMPLATE2",
-      "Author": "Mobiflight",
+      "Label": "SEC's led_14_seg",
+      "Type": "led_14_seg",
+      "Author": "SEC",
       "URL": "https://github.com",
       "Version" : "1.0.0"
     },
