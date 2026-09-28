@@ -77,7 +77,7 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
 
     char   *params, *p = NULL;
     char    parameter[MEMLEN_STRING_BUFFER];
-    uint8_t _pin1, _pin2, _pin3;
+    uint8_t _pin1, _pin2;
 
     /* **********************************************************************************
         Read the Type from the EEPROM or Flash, copy it into a buffer and evaluate it
@@ -91,15 +91,6 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         _customType = MY_CUSTOM_DEVICE_2;
 
     if (_customType == MY_CUSTOM_DEVICE_1) {
-        /* **********************************************************************************
-            Check if the device fits into the device buffer
-        ********************************************************************************** */
-        void* mem = MF_ALLOC_TYPE(MyCustomClass, 1);
-        if (!mem) {
-            // Error Message to Connector
-            cmdMessenger.sendCmd(kStatus, F("Custom Device does not fit in Memory"));
-            return;
-        }
         /* **********************************************************************************************
             Read the pins from the EEPROM or Flash, copy them into a buffer
             If you have set '"isI2C": true' in the device.json file, the first value is the I2C address
@@ -130,10 +121,12 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         ********************************************************************************** */
         uint16_t Parameter1;
         char    *Parameter2;
-        params     = strtok_r(parameter, "|", &p);
-        Parameter1 = atoi(params);
-        params     = strtok_r(NULL, "|", &p);
-        Parameter2 = params;
+        if (parameter[0] != 0x00) {      // ESP32 crashes if params gets not set
+            params     = strtok_r(parameter, "|", &p);
+            Parameter1 = atoi(params);
+            params     = strtok_r(NULL, "|", &p);
+            Parameter2 = params;
+        }
 
         /* **********************************************************************************
             Next call the constructor of your custom device
@@ -141,23 +134,18 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         ********************************************************************************** */
         // In most cases you need only one of the following functions
         // depending on if the constuctor takes the variables or a separate function is required
-        _mydevice = new (mem) MyCustomClass(_pin1, _pin2);
+        void *memory = allocateMemory(sizeof(MyCustomClass), alignof(MyCustomClass));
+        if (!memory) {
+            cmdMessenger.sendCmd(kStatus, F("Custom Device does not fit in Memory"));
+            return;
+        }
+        _mydevice = new (memory) MyCustomClass(_pin1, _pin2);
         _mydevice->attach(Parameter1, Parameter2);
         // if your custom device does not need a separate begin() function, delete the following
         // or this function could be called from the custom constructor or attach() function
         _mydevice->begin();
         _initialized = true;
     } else if (_customType == MY_CUSTOM_DEVICE_2) {
-        /* **********************************************************************************
-            Check if the device fits into the device buffer
-        ********************************************************************************** */
-        void* mem = MF_ALLOC_TYPE(MyCustomClass, 1);
-        if (!mem) {
-            // Error Message to Connector
-            cmdMessenger.sendCmd(kStatus, F("Custom Device does not fit in Memory"));
-            return;
-        }
-
         /* **********************************************************************************************
             Read the pins from the EEPROM or Flash, copy them into a buffer
             If you have set '"isI2C": true' in the device.json file, the first value is the I2C address
@@ -177,7 +165,8 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         /* **********************************************************************************
             Read the configuration from the EEPROM or Flash, copy it into a buffer.
         ********************************************************************************** */
-        getStringFromMem(adrConfig, parameter, configFromFlash);
+        // Don't use it until it's implemented in the Connector
+        //getStringFromMem(adrConfig, parameter, configFromFlash);
         /* **********************************************************************************
             split the config up into single parameter. As the number of parameters could be
             different between multiple devices, it is done here.
@@ -199,7 +188,12 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
         ********************************************************************************** */
         // In most cases you need only one of the following functions
         // depending on if the constuctor takes the variables or a separate function is required
-        _mydevice = new (mem) MyCustomClass(_pin1, _pin2);
+        void *memory = allocateMemory(sizeof(MyCustomClass), alignof(MyCustomClass));
+        if (!memory) {
+            cmdMessenger.sendCmd(kStatus, F("Custom Device does not fit in Memory"));
+            return;
+        }
+        _mydevice = new (memory) MyCustomClass(_pin1, _pin2);
         _mydevice->attach(Parameter1, Parameter2);
         // if your custom device does not need a separate begin() function, delete the following
         // or this function could be called from the custom constructor or attach() function

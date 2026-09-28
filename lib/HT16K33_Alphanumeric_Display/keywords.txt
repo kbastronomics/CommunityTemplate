@@ -1,0 +1,146 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+HT16K33	KEYWORD1
+alpha_blink_rate_t	KEYWORD1
+alpha_display_t	KEYWORD1
+alpha_display_type_t	KEYWORD1
+alpha_decimal_t	KEYWORD1
+alpha_colon_t	KEYWORD1
+alpha_command_t	KEYWORD1
+alpha_map_storage_t	KEYWORD1
+alpha_decimal_type_t	KEYWORD1
+alpha_colon_type_t	KEYWORD1
+alpha_display_features_t	KEYWORD1
+
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+setDisplayType	KEYWORD2
+getDecimalType	KEYWORD2
+getColonType	KEYWORD2
+hasDecimalPoint	KEYWORD2
+hasColon	KEYWORD2
+hasPerDigitDecimal	KEYWORD2
+hasDedicatedColon	KEYWORD2
+
+isConnected	KEYWORD2
+initialize	KEYWORD2
+lookUpDisplayAddress	KEYWORD2
+
+clear	KEYWORD2
+testAllSegments	KEYWORD2
+
+setBrightness	KEYWORD2
+setBrightnessSingle	KEYWORD2
+setBlinkRate	KEYWORD2
+setBlinkRateSingle	KEYWORD2
+
+displayOn	KEYWORD2
+displayOff	KEYWORD2
+displayOnSingle	KEYWORD2
+displayOffSingle	KEYWORD2
+setDisplayOnOff	KEYWORD2
+
+enableSystemClock	KEYWORD2
+disableSystemClock	KEYWORD2
+enableSystemClockSingle	KEYWORD2
+disableSystemClockSingle	KEYWORD2
+
+illuminateSegment	KEYWORD2
+illuminateChar	KEYWORD2
+printChar	KEYWORD2
+updateDisplay	KEYWORD2
+
+defineChar	KEYWORD2
+getSegmentsToTurnOn	KEYWORD2
+
+setCharacterMap	KEYWORD2
+clearCharacterMap	KEYWORD2
+hasCharacterMap	KEYWORD2
+
+decimalOn	KEYWORD2
+decimalOff	KEYWORD2
+decimalOnSingle	KEYWORD2
+decimalOffSingle	KEYWORD2
+setDecimalOnOff	KEYWORD2
+decimalOnDigit	KEYWORD2
+decimalOffDigit	KEYWORD2
+
+colonOn	KEYWORD2
+colonOff	KEYWORD2
+colonOnSingle	KEYWORD2
+colonOffSingle	KEYWORD2
+setColonOnOff	KEYWORD2
+colonOnDigit	KEYWORD2
+colonOffDigit	KEYWORD2
+
+shiftRight	KEYWORD2
+shiftLeft	KEYWORD2
+
+printf	KEYWORD2
+write	KEYWORD2
+
+readRAM	KEYWORD2
+writeRAM	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+DEFAULT_ADDRESS	LITERAL1
+DEFAULT_NOTHING_ATTACHED	LITERAL1
+
+SEG_A	LITERAL1
+SEG_B	LITERAL1
+SEG_C	LITERAL1
+SEG_D	LITERAL1
+SEG_E	LITERAL1
+SEG_F	LITERAL1
+SEG_G	LITERAL1
+SEG_H	LITERAL1
+SEG_I	LITERAL1
+SEG_J	LITERAL1
+SEG_K	LITERAL1
+SEG_L	LITERAL1
+SEG_M	LITERAL1
+SEG_N	LITERAL1
+SEG_DP	LITERAL1
+
+ALPHA_BLINK_RATE_NOBLINK	LITERAL1
+ALPHA_BLINK_RATE_2HZ	LITERAL1
+ALPHA_BLINK_RATE_1HZ	LITERAL1
+ALPHA_BLINK_RATE_0_5HZ	LITERAL1
+
+ALPHA_DISPLAY_ON	LITERAL1
+ALPHA_DISPLAY_OFF	LITERAL1
+
+ALPHA_DISPLAY_SPARKFUN	LITERAL1
+ALPHA_DISPLAY_ECBUY	LITERAL1
+ALPHA_DISPLAY_CUSTOM	LITERAL1
+
+ALPHA_DECIMAL_ON	LITERAL1
+ALPHA_DECIMAL_OFF	LITERAL1
+
+ALPHA_COLON_ON	LITERAL1
+ALPHA_COLON_OFF	LITERAL1
+
+ALPHA_MAP_RAM	LITERAL1
+ALPHA_MAP_PROGMEM	LITERAL1
+
+ALPHA_DECIMAL_NONE	LITERAL1
+ALPHA_DECIMAL_PER_DISPLAY	LITERAL1
+ALPHA_DECIMAL_PER_DIGIT	LITERAL1
+
+ALPHA_COLON_NONE	LITERAL1
+ALPHA_COLON_DEDICATED	LITERAL1
+ALPHA_COLON_SEGMENT_GLYPH	LITERAL1
+
+ALPHA_CMD_SYSTEM_SETUP	LITERAL1
+ALPHA_CMD_DISPLAY_SETUP	LITERAL1
+ALPHA_CMD_DIMMING_SETUP	LITERAL1

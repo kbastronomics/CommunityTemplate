@@ -16,7 +16,7 @@ community_project = env.GetProjectOption('custom_community_project', "")
 custom_source_folder = env.GetProjectOption('custom_source_folder', "")
 
 # Get the foldername inside the zip file from the build environment.
-zip_filename = env.GetProjectOption('custom_zip_filename', "")
+community_folder = env.GetProjectOption('custom_community_folder', "")
 
 platform = env.BoardConfig().get("platform", {})
 
@@ -26,24 +26,24 @@ def copy_fw_files (source, target, env):
     if os.path.exists("./_build/" + custom_source_folder) == False:
         os.makedirs("./_build/" + custom_source_folder + "/Community/firmware")
         shutil.copytree(custom_source_folder + "/Community", "./_build/" + custom_source_folder + "/Community", dirs_exist_ok=True)
-        # set FW version within boad.json files
-        replacements = {
-            "0.0.1": firmware_version
-        }
-        build_path_json = Path("./_build/" + custom_source_folder + "/Community/boards")
-        for file_path in build_path_json.rglob("*.json"):
-            replace_in_file(file_path, replacements)
         print("Creating /_build folder")
     
     if platform == "raspberrypi":
         fw_file_name=fw_file_name[0:-3] + "uf2"
 
+    if platform == "espressif32":
+        merge_bin(source, target, env)
+        old_name = fw_file_name[0:-4] + "_merged.bin"
+        fw_file_name = fw_file_name[0:-9]  + "merged_" + firmware_version.replace(".", "_") + ".bin"
+        os.replace(old_name, fw_file_name)
+
     print("Copying community folder")
     shutil.copy(fw_file_name, "./_build/" + custom_source_folder + "/Community/firmware")
     original_folder_path = "./_build/" + custom_source_folder + "/Community"
-    zip_file_path = './_dist/' + zip_filename + '_' + firmware_version + '.zip'
+    zip_file_path = './_dist/' + community_project + '_' + firmware_version + '.zip'
+    new_folder_in_zip = community_folder
     print("Creating zip file")
-    createZIP(original_folder_path, zip_file_path, community_project)
+    createZIP(original_folder_path, zip_file_path, new_folder_in_zip)
 
 def createZIP(original_folder_path, zip_file_path, new_folder_name):
     if os.path.exists("./_dist") == False:
@@ -56,16 +56,40 @@ def createZIP(original_folder_path, zip_file_path, new_folder_name):
                 # Add the file to the ZIP file
                 zipf.write(os.path.join(root, file), new_path)
 
-def replace_in_file(file_path, replacements):
-    """Replace all keys in `replacements` with their values in the given file."""
-    with open(file_path, "r", encoding="utf-8") as file:
-        content = file.read()
+APP_BIN = "$BUILD_DIR/${PROGNAME}.bin"
+MERGED_BIN = "$BUILD_DIR/${PROGNAME}_merged.bin"
+BOARD_CONFIG = env.BoardConfig()
 
-    for old, new in replacements.items():
-        content = content.replace(old, new)
+def merge_bin(source, target, env):
+    # The list contains all extra images (bootloader, partitions, eboot) and
+    # the final application binary
+    flash_images = env.Flatten(env.get("FLASH_EXTRA_IMAGES", [])) + ["$ESP32_APP_OFFSET", APP_BIN]
 
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.write(content)
+    # Run esptool to merge images into a single binary
+    env.Execute(
+        " ".join(
+            [
+                "$PYTHONEXE",
+                "$OBJCOPY",
+                "--chip",
+                BOARD_CONFIG.get("build.mcu", "esp32"),
+                "merge_bin",
+                "--fill-flash-size",
+                BOARD_CONFIG.get("upload.flash_size", "4MB"),
+                "-o",
+                MERGED_BIN,
+            ]
+            + flash_images
+        )
+    )
+
+# Patch the upload command to flash the merged binary at address 0x0
+#env.Replace(
+#    UPLOADERFLAGS=[
+#        ]
+#        + ["write_flash", "0x0", MERGED_BIN],
+#    UPLOADCMD='"$PYTHONEXE" "$UPLOADER" $UPLOADERFLAGS',
+#)
 
 env.AddPostAction("$BUILD_DIR/${PROGNAME}.hex", copy_fw_files)
 env.AddPostAction("$BUILD_DIR/${PROGNAME}.bin", copy_fw_files)
