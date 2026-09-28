@@ -10,6 +10,9 @@ alpha_decimal_t	KEYWORD1
 alpha_colon_t	KEYWORD1
 alpha_command_t	KEYWORD1
 alpha_map_storage_t	KEYWORD1
+alpha_decimal_type_t	KEYWORD1
+alpha_colon_type_t	KEYWORD1
+alpha_display_features_t	KEYWORD1
 
 
 #######################################
@@ -18,11 +21,20 @@ alpha_map_storage_t	KEYWORD1
 
 begin	KEYWORD2
 setDisplayType	KEYWORD2
+getDecimalType	KEYWORD2
+getColonType	KEYWORD2
+hasDecimalPoint	KEYWORD2
+hasColon	KEYWORD2
+hasPerDigitDecimal	KEYWORD2
+hasDedicatedColon	KEYWORD2
+
 isConnected	KEYWORD2
 initialize	KEYWORD2
 lookUpDisplayAddress	KEYWORD2
 
 clear	KEYWORD2
+testAllSegments	KEYWORD2
+
 setBrightness	KEYWORD2
 setBrightnessSingle	KEYWORD2
 setBlinkRate	KEYWORD2
@@ -120,6 +132,14 @@ ALPHA_COLON_OFF	LITERAL1
 
 ALPHA_MAP_RAM	LITERAL1
 ALPHA_MAP_PROGMEM	LITERAL1
+
+ALPHA_DECIMAL_NONE	LITERAL1
+ALPHA_DECIMAL_PER_DISPLAY	LITERAL1
+ALPHA_DECIMAL_PER_DIGIT	LITERAL1
+
+ALPHA_COLON_NONE	LITERAL1
+ALPHA_COLON_DEDICATED	LITERAL1
+ALPHA_COLON_SEGMENT_GLYPH	LITERAL1
 
 ALPHA_CMD_SYSTEM_SETUP	LITERAL1
 ALPHA_CMD_DISPLAY_SETUP	LITERAL1
